@@ -24,21 +24,23 @@ This project "operationalize" a sample python/[flask](https://flask.palletsproje
 
 ## START HERE
 Create EC2 for build enviroment
+![Server](./img/EC2_server.png)
+![Server EC2](./img/build_server.png)
 
 ### Setup Enviroment
-chmod +x 1.1.install_python3.sh
+- chmod +x 1.1.install_python3.sh
 ./1.1.install_python3.sh
-chmod +x 2.install_docker.sh
+- chmod +x 2.install_docker.sh
 ./2.install_docker.sh
-chmod +x 3.install_kubectl.sh
+- chmod +x 3.install_kubectl.sh
 ./3.install_kubectl.sh
-chmod +x 4.install_aws.sh
+- chmod +x 4.install_aws.sh
 ./4.install_aws.sh
-chmod +x 5.install_eksctl.sh
+- chmod +x 5.install_eksctl.sh
 ./5.install_eksctl.sh
 ![Run Lint](./img/Fail_and_Successful_Linting.png)
 
-chmod +x 9.create_cluster.sh
+- chmod +x 9.create_cluster.sh
 ./9.create_cluster.sh
 ![Run command](./img/create_cluster.png)
 ![CloudFormation cluster stack info](./img/Build_Kubernetes_cluster.png)
@@ -54,9 +56,8 @@ chmod +x 6.run_docker.sh
 
 chmod +x 7.upload_docker.sh
 ./7.upload_docker.sh
-![Docker image](./img/build_image_docker_hub.png)
 ![upload image to docker](./img/Upload_image_to_docker.png)
-
+![Docker image](./img/build_image_docker_hub.png)
 
 Hello world application running:
 ![Application running in AWS](./img/Output.png)
