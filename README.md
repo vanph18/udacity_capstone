@@ -58,6 +58,7 @@ Reset passwd docker
 ./7.upload_docker.sh
 ![upload image to docker](./img/Upload_image_to_docker.png)
 ![Docker image](./img/build_image_docker_hub.png)
+![Docker image](./img/deploy_image_to_container.png)
 
 Hello world application running:
 ![Application running in AWS](./img/Output.png)
