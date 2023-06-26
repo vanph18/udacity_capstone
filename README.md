@@ -1,6 +1,6 @@
 # Udacity AWS DevOps Engineer Capstone Project
 
-[![Guillermo Ampie](https://circleci.com/gh/guillermo-ampie/devops-capstone.svg?style=shield)](https://github.com/guillermo-ampie/devops-capstone)
+[![kcemenike](https://circleci.com/gh/kcemenike/operationalize-ml.svg?style=svg)](https://app.circleci.com/pipelines/github/vanph18/udacity_capstone)
 
 ## Project Overview
 
@@ -9,82 +9,114 @@ This capstone project showcases the use of several CI/CD tools and cloud service
 ### Introduction
 
 This project "operationalize" a sample python/[flask](https://flask.palletsprojects.com/)
-demo app ["hello"](./hello_app/hello.py), using [CircleCI](https://www.circleci.com) and
- a [Kubernetes](https://kubernetes.io/)(K8S) cluster deployed in [AWS EKS](https://aws.amazon.com/eks/)(Amazon Elastic Kubernetes Services):
 
-* In a [CircleCI](https://www.circleci.com) pipeline, we lint the project's code, build
- a [Docker](https://www.docker.com/resources/what-container) image and deploy it to a public
-Docker Registry: [Docker Hub](https://hub.docker.com/repository/docker/gampie/hello-app)
-* Then in an [AWS EKS](https://aws.amazon.com/eks/) cluster, we run the application
-* Later, we promote to production a new app version using a rolling update strategy
+## What does this project do?
 
-All the project's tasks are included in a [Makefile](Makefile), which uses several shell scripts stored in the
-[bin](bin) directory.
+- Create Github repository with project code
+- Use image repository to store Docker images
+- Execute linting step in code pipeline
+- Build a Docker container in a pipeline
+- The Docker container is deployed to a Kubernetes cluster
+- Use a Rolling Deployment successfully
 
-### Project Tasks
+## Requirements
+ - Python 3.7
 
-Using a CI/CD approach, we build a [Docker](https://www.docker.com/resources/what-container) image and then run it in a [Kubernetes](https://kubernetes.io/) cluster.
+## START HERE
 
-The project includes the following main tasks:
+### Step 1
+- install python3.7
+- sudo apt update
+- sudo apt install software-properties-common
+- sudo add-apt-repository ppa:deadsnakes/ppa
+- sudo apt install python3.7
+- python3.7 --version
+- setup environment for python3.7
+- sudo apt install python3.7-venv  
+- python3.7 -m venv ~/.devops
+- source ~/.devops/bin/activate
 
-* Initialize the Python virtual environment:  `make setup`
-* Install all necessary dependencies:  `make install`
-* Test the project's code using linting:  `make lint`
-  * Lints shell scripts, Dockerfile and python code
-* Create a Dockerfile to "containerize" the [hello](/hello_app/hello.py) application: [Dockerfile](hello_app/Dockerfile)
-* Deploy to a public Docker Registry:
- [Docker Hub](https://hub.docker.com/repository/docker/gampie/hello-app) the containerized application
-* Deploy a Kubernetes cluster:  `make eks-create-cluster`
-* Deploy the application:  `make k8s-deployment`
-* Update the app in the cluster, using a rolling-update strategy:  `make rolling-update`
-* Delete the cluster:  `make eks-delete-cluster`
+### Step 2
+- install docker
+- sudo apt update
+- sudo apt install apt-transport-https ca-certificates curl software-properties-common
+- curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+- echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+- sudo apt update
+- apt-cache policy docker-ce
+- sudo apt install docker-ce
+- sudo systemctl status docker
+- Executing the Docker Command Without Sudo
+- setup password for ubuntu
+- sudo passwd ubuntu
+- sudo usermod -aG docker ${USER}
+- su - ${USER}
 
-The CirclCI pipeline([config.yml](.circleci/config.yml)) will execute the following steps automatically:
+### Step 3
+- install kubectl
+- curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.18.8/2020-09-18/bin/linux/amd64/kubectl
+- chmod +x ./kubectl
+- sudo mv ./kubectl /usr/local/bin
+- kubectl version --short --client
 
-* `make setup`
-* `make install`
-* `make lint`
-* Build and publish the container image
+### Step 4
+- install AWS CLI
+- curl https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip -o awscliv2.zip 
+- sudo apt install unzip	
+- unzip awscliv2.zip
+- sudo ./aws/install
+- aws --version
 
-To verify that the app is working, write your deployment's IP into your browser using port 80, like
-`http://localhost:80` or `http://LOAD_BALANCER_IP:80` (according to your environment).
+### Step 5
+- install eksctl
+- curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+- sudo mv /tmp/eksctl /usr/local/bin
+- eksctl version 
 
-Alternatively, you can use `curl`: `curl localhost:80` or `curl LOAD_BALANCER_IP:80`
+### Step 6
+- run docker
+- docker build --tag=hello .
+- docker image list
+- docker run -p 80:80 hello 
 
-### CI/CD Tools and Cloud Services
+### Step 7
+- upload docker images
+- dockerpath="vanph/hello:v1.0.0"
+- docker login
+- docker tag hello ${dockerpath}
+- echo "Docker ID and Image: $dockerpath"
+- docker push ${dockerpath}
 
-* [Circle CI](https://www.circleci.com) - Cloud-based CI/CD service
-* [Amazon AWS](https://aws.amazon.com/) - Cloud services
-* [AWS EKS](https://aws.amazon.com/eks/) - Amazon Elastic Kubernetes Services
-* [AWS eksctl](https://eksctl.io) - The official CLI for Amazon EKS
-* [AWS CLI](https://aws.amazon.com/cli/) - Command-line tool for AWS
-* [CloudFormation](https://aws.amazon.com/cloudformation/) - Infrastructure as Code
-* [kubectl](https://kubernetes.io/docs/reference/kubectl/) - a command-line tool to control Kubernetes clusters
-* [Docker Hub](https://hub.docker.com/repository/docker/gampie/hello-app) - Container images repository service
+### Step 8
+ - aws configure
 
-#### CicleCI Variables
+### Step 9
+- create cluster
+- eksctl create cluster --name k8s-235 --region us-east-1 --node-type t3.small --nodes 2
+- get list clusters
+- aws eks list-clusters
 
-  The project uses [circleci/docker](https://circleci.com/developer/orbs/orb/circleci/docker) orb,
-  so to be able to `build` and `publish` your images, you need to set up the following environment
-  variables in your CircleCI project with your DockerHub account's values:
+### Step 10
+- deployement kubernet
+- kubectl create deployment hello --image=vanph/hello:v1.0.0 --replicas=3
+- get status after deployment
+- kubectl get deployment
 
-* DOCKER_LOGIN
-* DOCKER_PASSWORD
-  
-### Main Files
+### Step 11
+- expose deployment
+- kubectl expose deployment/hello --type="LoadBalancer" --port 80
+- get information after expose deployment
+- kubectl get services -o wide
 
-* [Makefile](./Makefile): the main file to execute all the project steps, i.e., the project's command center!
-* [config.yml](.circleci/config.yml): to test and integrate the app under CircleCI
-* [hello.app](./hello_app/hello.py): the sample python/flask app
-* [Dockerfile](./hello_app/Dockerfile): the Docker image's specification file
-* [hello_cluster.yml](./hello_cluster.yml): EKS cluster definition file
+### Step 12
+- rolling-update
+- kubectl set image deployment <deployment-name> <container-name>=<new-image>
+- kubectl set image deployment hello hello=vanph/hello:v2.0.0
+- get status after rolling-update
+- kubectl rollout status deploy hello    
 
-The following shell scripts are invoked from the [Makefile](./Makefile)
-
-* [eks_create_cluster.sh](./bin/eks_create_cluster.sh): creates the EKS cluster
-* [install_eksctl.sh](./bin/install_eksctl.sh): installs the eksctl tool
-* [install_hadolint.sh](./bin/install_hadolint.sh): installs the hadolint linter(for Dockerfiles) tool
-* [install_kubectl.sh](./bin/install_kubectl.sh): installs the kubectl tool to control K8S clusters
-* [install_shellcheck.sh](./bin/install_shellcheck.sh): installs the shellcheck(for shell scripts) linter tool
-* [k8s_cleanup_resources.sh](./bin/k8s_cleanup_resources.sh): deletes services and deployments in a K8S cluster
-* [k8s_deployment.sh](./bin/k8s_deployment.sh): deploys and exposes a service in the K8S cluster
+### Step 13
+- check version app that we have
+- kubectl rollout history deploy hello
+- rollback
+- kubectl rollout undo deployment hello --to-revision=1
