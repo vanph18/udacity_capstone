@@ -4,8 +4,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    html = "Hello World, my name is VanPH5 v1"
-    # html = "Hello World, my name is VanPH5 v2"
+    # html = "Hello World, my name is VanPH5 v1"
+    html = "Hello World, my name is VanPH5 v2"
     return html
 
 if __name__ == "__main__":
