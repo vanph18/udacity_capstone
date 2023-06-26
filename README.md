@@ -51,10 +51,10 @@ Reset passwd docker
 - sudo passwd ubuntu
 - sudo usermod -aG docker ${USER}
 - su - ${USER}
-chmod +x 6.run_docker.sh
+- chmod +x 6.run_docker.sh
 ./6.run_docker.sh
 
-chmod +x 7.upload_docker.sh
+- chmod +x 7.upload_docker.sh
 ./7.upload_docker.sh
 ![upload image to docker](./img/Upload_image_to_docker.png)
 ![Docker image](./img/build_image_docker_hub.png)
